@@ -68,6 +68,21 @@
             background-color: #ffa500; /* Add a green color to the "active/current" link */
             color: white;
             }
+            #machine{
+                padding: 10%;
+                font-size: 20px;
+                font-family: 'Nunito', sans-serif;
+            }
+            .titleOne{
+                font-size: 35px;
+            }
+            .titleTwo{
+                font-size: 27px;
+            }
+            #info{
+                padding-left: 5%;
+            }
+
         </style>
     </head>  
     
@@ -85,6 +100,7 @@
                 <a id="menuItem" href="#" onclick="showHide(1)">CPU</a>
                 <a id="menuItem" href="#" onclick="showHide(2)">Hard Drive</a>
                 <a id="menuItem" href="#" onclick="showHide(3)">Network</a>
+                <a id="menuItem" href="#" onclick="showHide(4)">Machine Info</a>
             </div>
         </div>
         <div class="content">
@@ -99,6 +115,11 @@
             </div>
             <div id="net" class="contents" hidden>
                 Network
+            </div>
+            <div id="machine" class="contents" hidden>
+                <div class="titleOne"> Machine Info: </div>
+                <br>
+                <div id="infoTable"></div>
             </div>
         </div>
     </body>  

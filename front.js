@@ -1,6 +1,7 @@
 google.charts.load('current', {'packages':['corechart']});
 var ramData = new Array(60);
 var cpuData = new Array(60);
+
 //google charts functions
 
 function drawChart(current) {
@@ -77,9 +78,9 @@ function drawChart(current) {
     ['',ramData[1]],
     ['Current*',ramData[0]]
     ]);
-    //for(i = 60; i > 1; i--){
-        //console.log(data.cache[59])
-    //}
+    // for(i = 60; i > 1; i--){
+    //     console.log(data.cache[59])
+    // }
     var options = {
     backgroundColor: '#2e2e2e',
     title: 'Ram Used In ' + dataSizeType,
@@ -165,7 +166,6 @@ function cpuChart(current) {
     ['Current*',cpuData[0]]
     ]);
     
-
     var options = {
     backgroundColor: '#2e2e2e',
     title: 'CPU Percent Used ' + Math.ceil(current) + '%',
@@ -215,25 +215,44 @@ function showHide(showMe){
     content[showMe].hidden = false;
     menu[showMe].classList.add('active');
 }
+
+function loadStatic(info){
+    document.getElementById('host').innerHTML = info.hostname;
+
+     Object.keys(info).forEach(function(key,index) {
+         //var tableData = document.getElementById('infoTable').innerHTML;
+         document.getElementById('infoTable').innerHTML = document.getElementById('infoTable').innerHTML + '<div id="' + key + index + '">' + '<div class="titleTwo">' + key + ':</div><div id="info">' + info[key] + '</div></div><br>';
+     });
+}
+
+function loadNetInfo(info){
+    str = "off"
+    document.getElementById('net').innerHTML = str;
+    
+}
+
 //socket io functions
 $(function () {
+   
     var socket = io();
     setInterval(sendMemReq, 1000);
-    socket.emit('hostname', 0);
-    
+    socket.emit('staticInfo', 0);
+    socket.emit('request', 0);
+
     function sendMemReq(){
-        //e.preventDefault();
-        socket.emit('memReq', 0);
-        socket.emit('cpu', 0);
+        socket.emit('request', 0);
     }
-        socket.on('memReq', function(mem){
-        drawChart(formatBytes(mem, 8));
+    
+    socket.on('sendObj', function(obj){
+        drawChart(formatBytes(obj.totalRam - obj.ram, 8));
+        cpuChart(obj.cpu);
+     });
+
+    socket.on('staticInfo', function(info){
+        info[0].ram = formatBytes(info[0].ram);
+        loadStatic(info[0]);
+        loadNetInfo(info[1]);
     });
-        socket.on('hostname', function(name){
-        document.getElementById('host').innerHTML = name;
-    });
-        socket.on('cpu', function(name){
-        cpuChart(name*100);
-    });
+    
 });
     

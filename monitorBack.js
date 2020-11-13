@@ -1,10 +1,32 @@
 var os = require('os');
-const express = require('express')
-const app = express()
-//var app = require('express')();
+const express = require('express');
+const app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var osutil = require('os-utils');
+var process = require('process');
+const si = require('systeminformation');
+const { stat } = require('fs');
+
+var dataObj = {
+	ram: 0,
+	totalRam: 0,
+	cpu: 0,
+	uptime: 0
+};
+
+var staticInfo = {
+	hostname: "",
+	version: "",
+	cpuModel: "",
+	arch: "",
+	ram: 0
+};
+
+var netInfo = {
+	interfaces: ""
+}
+
+var staticObj = [staticInfo, netInfo]
 
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.html');
@@ -13,26 +35,41 @@ app.get('/', (req, res) => {
 app.use(express.static(__dirname));
 
 io.on('connection', (socket) => {
-    //console.log(os.platform());
-	//console.log(os.arch());
 
-    socket.on('memReq', (mem) => {
-		var usedmem = os.totalmem() - os.freemem();
-		io.emit('memReq', usedmem);
+	socket.on('request', (lol) => {
+		cpuEmit = 0;
+
+		si.currentLoad(function(load) {
+			dataObj.cpu = load.currentload;
+			dataObj.ram = os.totalmem() - os.freemem();
+			dataObj.totalRam = os.totalmem();
+			dataObj.uptime = os.uptime();
+			io.emit('sendObj', dataObj); 
+		});
 	});
 
-	socket.on('cpu', (cpuper) => {
-	    osutil.cpuUsage(function(v) {
-			io.emit('cpu', v);
-	    });
+	socket.on('staticInfo', (info) => {
+		staticObj[0].hostname = os.hostname();
+		staticObj[0].version = os.version();
+		var tempCpuInfo = os.cpus();
+		staticObj[0].cpuModel = tempCpuInfo[0].model;
+		staticObj[0].arch = os.arch();
+		staticObj[0].ram = os.totalmem();
+		staticObj[1].interfaces = os.networkInterfaces();
+		io.emit('staticInfo', staticObj);
 	});
 
-	socket.on('hostname', (name) => {
-		var hostname = os.hostname();
-		io.emit('hostname', hostname);
-	});
 });
 console.log(__dirname);
 console.log(os.uptime());
+if (process.pid) {
+	console.log('Running on PID: ' + process.pid);
+  }
 http.listen(3000, () => {
+});
+
+
+console.log(si.version());
+si.currentLoad(function(info){
+	console.log("CPU LOAD: " + info.currentload);
 });
