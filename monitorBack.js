@@ -5,7 +5,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var process = require('process');
 const si = require('systeminformation');
-const { stat } = require('fs');
+
 
 var dataObj = {
 	ram: 0,
@@ -24,9 +24,13 @@ var staticInfo = {
 
 var netInfo = {
 	interfaces: ""
+};
+
+var hddInfo = {
+	sizeOfDisk: ""
 }
 
-var staticObj = [staticInfo, netInfo]
+var staticObj = [staticInfo, netInfo, hddInfo];
 
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.html');
@@ -73,3 +77,7 @@ console.log(si.version());
 si.currentLoad(function(info){
 	console.log("CPU LOAD: " + info.currentload);
 });
+
+// si.diskLayout(function(load){
+// 	console.table(load);
+// });

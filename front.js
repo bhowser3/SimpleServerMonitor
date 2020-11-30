@@ -1,6 +1,6 @@
 google.charts.load('current', {'packages':['corechart']});
 var ramData = new Array(60);
-var cpuData = new Array(60);
+var cpuData = [];
 
 //google charts functions
 
@@ -78,9 +78,7 @@ function drawChart(current) {
     ['',ramData[1]],
     ['Current*',ramData[0]]
     ]);
-    // for(i = 60; i > 1; i--){
-    //     console.log(data.cache[59])
-    // }
+    
     var options = {
     backgroundColor: '#2e2e2e',
     title: 'Ram Used In ' + dataSizeType,
@@ -94,6 +92,16 @@ function drawChart(current) {
     var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
     chart.draw(data, options);
 }
+
+function cpuArraySet(current){
+    if(cpuData.length == 60){
+        cpuData.pop();
+        cpuData.unshift(current);
+    }else{
+        cpuData.push(current);
+    }
+}
+
 function cpuChart(current) {
     cpuData.unshift(current);
     if(cpuData[59] === undefined){
@@ -101,71 +109,69 @@ function cpuChart(current) {
     }else{
         cpuData[59] = parseFloat(cpuData[59]);
     }
-
     var data = google.visualization.arrayToDataTable([
-    ['seconds', '0'],
-    ['60',cpuData[59]],
-    ['',cpuData[58]],
-    ['',cpuData[57]],
-    ['',cpuData[56]],
-    ['',cpuData[55]],
-    ['',cpuData[54]],
-    ['',cpuData[53]],
-    ['',cpuData[52]],
-    ['',cpuData[51]],
-    ['',cpuData[50]],
-    ['',cpuData[49]],
-    ['',cpuData[48]],
-    ['',cpuData[47]],
-    ['',cpuData[46]],
-    ['',cpuData[45]],
-    ['45',cpuData[44]],
-    ['',cpuData[43]],
-    ['',cpuData[42]],
-    ['',cpuData[41]],
-    ['',cpuData[40]],
-    ['',cpuData[39]],
-    ['',cpuData[38]],
-    ['',cpuData[37]],
-    ['',cpuData[36]],
-    ['',cpuData[35]],
-    ['',cpuData[34]],
-    ['',cpuData[33]],
-    ['',cpuData[32]],
-    ['',cpuData[31]],
-    ['',cpuData[30]],
-    ['30',cpuData[29]],
-    ['',cpuData[28]],
-    ['',cpuData[27]],
-    ['',cpuData[26]],
-    ['',cpuData[25]],
-    ['',cpuData[24]],
-    ['',cpuData[23]],
-    ['',cpuData[22]],
-    ['',cpuData[21]],
-    ['',cpuData[20]],
-    ['',cpuData[19]],
-    ['',cpuData[18]],
-    ['',cpuData[17]],
-    ['',cpuData[16]],
-    ['',cpuData[15]],
-    ['15',cpuData[14]],
-    ['',cpuData[13]],
-    ['',cpuData[12]],
-    ['',cpuData[11]],
-    ['',cpuData[10]],
-    ['',cpuData[9]],
-    ['',cpuData[8]],
-    ['',cpuData[7]],
-    ['',cpuData[6]],
-    ['',cpuData[5]],
-    ['',cpuData[4]],
-    ['',cpuData[3]],
-    ['',cpuData[2]],
-    ['',cpuData[1]],
-    ['Current*',cpuData[0]]
-    ]);
-    
+        ['seconds', '0'],
+        ['60',cpuData[59]],
+        ['',cpuData[58]],
+        ['',cpuData[57]],
+        ['',cpuData[56]],
+        ['',cpuData[55]],
+        ['',cpuData[54]],
+        ['',cpuData[53]],
+        ['',cpuData[52]],
+        ['',cpuData[51]],
+        ['',cpuData[50]],
+        ['',cpuData[49]],
+        ['',cpuData[48]],
+        ['',cpuData[47]],
+        ['',cpuData[46]],
+        ['',cpuData[45]],
+        ['45',cpuData[44]],
+        ['',cpuData[43]],
+        ['',cpuData[42]],
+        ['',cpuData[41]],
+        ['',cpuData[40]],
+        ['',cpuData[39]],
+        ['',cpuData[38]],
+        ['',cpuData[37]],
+        ['',cpuData[36]],
+        ['',cpuData[35]],
+        ['',cpuData[34]],
+        ['',cpuData[33]],
+        ['',cpuData[32]],
+        ['',cpuData[31]],
+        ['',cpuData[30]],
+        ['30',cpuData[29]],
+        ['',cpuData[28]],
+        ['',cpuData[27]],
+        ['',cpuData[26]],
+        ['',cpuData[25]],
+        ['',cpuData[24]],
+        ['',cpuData[23]],
+        ['',cpuData[22]],
+        ['',cpuData[21]],
+        ['',cpuData[20]],
+        ['',cpuData[19]],
+        ['',cpuData[18]],
+        ['',cpuData[17]],
+        ['',cpuData[16]],
+        ['',cpuData[15]],
+        ['15',cpuData[14]],
+        ['',cpuData[13]],
+        ['',cpuData[12]],
+        ['',cpuData[11]],
+        ['',cpuData[10]],
+        ['',cpuData[9]],
+        ['',cpuData[8]],
+        ['',cpuData[7]],
+        ['',cpuData[6]],
+        ['',cpuData[5]],
+        ['',cpuData[4]],
+        ['',cpuData[3]],
+        ['',cpuData[2]],
+        ['',cpuData[1]],
+        ['Current*',cpuData[0]]
+        ]);
     var options = {
     backgroundColor: '#2e2e2e',
     title: 'CPU Percent Used ' + Math.ceil(current) + '%',
@@ -192,7 +198,6 @@ function getDataSizeType(num){
 }
 
 function formatBytes(bytes, decimals = 4) {
-
     if (bytes === 0) return '0 Bytes';
 
     const k = 1024;
@@ -227,13 +232,11 @@ function loadStatic(info){
 
 function loadNetInfo(info){
     str = "off"
-    document.getElementById('net').innerHTML = str;
-    
+    document.getElementById('net').innerHTML = str;   
 }
 
 //socket io functions
 $(function () {
-   
     var socket = io();
     setInterval(sendMemReq, 1000);
     socket.emit('staticInfo', 0);
