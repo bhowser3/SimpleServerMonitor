@@ -68,7 +68,7 @@
             background-color: #ffa500; /* Add a green color to the "active/current" link */
             color: white;
             }
-            #machine{
+            .contents{
                 padding: 10%;
                 font-size: 20px;
                 font-family: 'Nunito', sans-serif;
@@ -78,6 +78,9 @@
             }
             .titleTwo{
                 font-size: 27px;
+            }
+            .titleThree{
+                font-size: 22px;
             }
             #info{
                 padding-left: 5%;
@@ -111,10 +114,14 @@
                 <div id="cpu_chart" style="width: 100%; height: 79vh;"></div>
             </div>
             <div id="hd" class="contents" hidden>
-                HD
+                <div class="titleOne"> Hard Disks: </div>
+                <br>
+                <div id="fsTable"></div>
             </div>
             <div id="net" class="contents" hidden>
-                Network
+                <div class="titleOne"> Network Info: </div>
+                <br>
+                <div id="netTable"></div>
             </div>
             <div id="machine" class="contents" hidden>
                 <div class="titleOne"> Machine Info: </div>

@@ -204,8 +204,7 @@ function formatBytes(bytes, decimals = 4) {
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
+    const i = Math.floor(Math.log(bytes) / Math.log(k)); 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
@@ -221,18 +220,21 @@ function showHide(showMe){
     menu[showMe].classList.add('active');
 }
 
-function loadStatic(info){
-    document.getElementById('host').innerHTML = info.hostname;
 
-     Object.keys(info).forEach(function(key,index) {
-         //var tableData = document.getElementById('infoTable').innerHTML;
-         document.getElementById('infoTable').innerHTML = document.getElementById('infoTable').innerHTML + '<div id="' + key + index + '">' + '<div class="titleTwo">' + key + ':</div><div id="info">' + info[key] + '</div></div><br>';
-     });
+function buildDataView(info, elementID){
+    Object.keys(info).forEach(function(key,index) {
+        if(typeof info[key] === 'object' && info[key] !== null){
+            console.log(info[key]);
+        }else{
+            document.getElementById(elementID).innerHTML = document.getElementById(elementID).innerHTML + '<div id="' + key + index + '">' + '<div class="titleTwo">' + key + ':</div><div id="info">' + info[key] + '</div></div><br>';
+        }
+    });
 }
 
-function loadNetInfo(info){
-    str = "off"
-    document.getElementById('net').innerHTML = str;   
+function buildArrayView(info, elementID){
+    for(let i = 0; info.length > i; i++){
+        buildDataView(info[i], elementID);
+    }
 }
 
 //socket io functions
@@ -253,8 +255,12 @@ $(function () {
 
     socket.on('staticInfo', function(info){
         info[0].ram = formatBytes(info[0].ram);
-        loadStatic(info[0]);
-        loadNetInfo(info[1]);
+        //loadStatic(info[0], info[1]);
+        buildDataView(info[0], 'infoTable')
+        buildDataView(info[1], 'netTable')
+        buildArrayView(info[3], 'fsTable');
+        document.getElementById('host').innerHTML = info[0].hostname;
+        
     });
     
 });

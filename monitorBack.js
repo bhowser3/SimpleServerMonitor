@@ -7,6 +7,7 @@ var process = require('process');
 const si = require('systeminformation');
 
 
+
 var dataObj = {
 	ram: 0,
 	totalRam: 0,
@@ -23,12 +24,14 @@ var staticInfo = {
 };
 
 var netInfo = {
-	interfaces: ""
+	interfaces: "",
+	ip4: "",
+	ip4subnet: "",
+	type: "",
+	dhcp: ""
 };
 
-var hddInfo = {
-	sizeOfDisk: ""
-}
+var hddInfo = new Array();
 
 var staticObj = [staticInfo, netInfo, hddInfo];
 
@@ -36,10 +39,26 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.html');
 });
 
+async function networkAndDockerLoadData() {
+	try {
+		const networkData = await si.networkInterfaces();
+		const fsData = await si.diskLayout();
+		
+		staticObj[1].interfaces = networkData[0].ifaceName;
+		staticObj[1].ip4 = networkData[0].ip4;
+		staticObj[1].ip4subnet = networkData[0].ip4subnet;
+		staticObj[1].type = networkData[0].type;
+		staticObj[1].dhcp = networkData[0].dhcp;
+		staticObj[3] = fsData;
+
+	} catch (e) {
+		  console.log(e);
+	}
+  }
+
 app.use(express.static(__dirname));
 
 io.on('connection', (socket) => {
-
 	socket.on('request', (lol) => {
 		cpuEmit = 0;
 
@@ -60,6 +79,8 @@ io.on('connection', (socket) => {
 		staticObj[0].arch = os.arch();
 		staticObj[0].ram = os.totalmem();
 		staticObj[1].interfaces = os.networkInterfaces();
+		
+		networkAndDockerLoadData();
 		io.emit('staticInfo', staticObj);
 	});
 
@@ -77,7 +98,3 @@ console.log(si.version());
 si.currentLoad(function(info){
 	console.log("CPU LOAD: " + info.currentload);
 });
-
-// si.diskLayout(function(load){
-// 	console.table(load);
-// });
