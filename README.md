@@ -1,6 +1,6 @@
 # SimpleServerMonitor
 
-A simple server monitoring tool built on NodeJS, Socket.io, Google Graphs, and other JavaScript
+A simple server monitoring tool built on NodeJS, Socket.io, Google Graphs
 
  - Machine must have NodeJS
 	 - socket.io
