@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+    <head>  
+        <TITLE>Simple Server Monitor</TITLE>  
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="/front.js"></script>
+
+        <style> 
+            body{
+                margin:auto;
+                background-color: #2e2e2e;
+                color: #bfbfbf;
+            }
+            .head{
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: medium;
+                background-color: #191919;
+                width: 100%;
+                height: 10%;
+            }
+            .content{
+                font-family: Arial, Helvetica, sans-serif;
+                float: left;
+                width: 80%;
+            }
+            .line1{
+                border-style: solid;
+                width: 100%;
+            }
+            .hostname{
+                padding: 15px;
+                font-size: 15px;
+                font-family: 'Nunito', sans-serif;
+            }
+            #host{
+                font-size: 20px;
+                font-family: 'Nunito', sans-serif;
+                font-weight: bold;
+            }
+            .menu-block{
+                width: 15%;
+                height: 100vh;
+                position: relative;
+                float: left;
+                background-color: #212121;
+            }
+            .vertical-menu {
+             /* Set a width if you like */
+                font-family: 'Nunito', sans-serif;
+            }
+
+            .vertical-menu a {
+            background-color: #212121; /* Grey background color */
+            color: white; /* Black text color */
+            display: block; /* Make the links appear below each other */
+            padding: 12px; /* Add some padding */
+            text-decoration: none; /* Remove underline from links */
+            }
+
+            .vertical-menu a:hover {
+            background-color: #2e2e2e; /* Dark grey background on mouse-over */
+            }
+
+            .vertical-menu a.active {
+            background-color: #ffa500; /* Add a green color to the "active/current" link */
+            color: white;
+            }
+            .contents{
+                padding: 10%;
+                font-size: 20px;
+                font-family: 'Nunito', sans-serif;
+            }
+            .titleOne{
+                font-size: 35px;
+            }
+            .titleTwo{
+                font-size: 27px;
+            }
+            .titleThree{
+                font-size: 22px;
+            }
+            #info{
+                padding-left: 5%;
+            }
+
+        </style>
+    </head>  
+
+    <body onload="">  
+        <div class="head">
+            <div class="hostname">Host Machine: 
+                <br>
+                <div id="host">HOSTNAME</div>
+            </div>
+        </div>
+
+        <div class="menu-block">
+            <div class="vertical-menu">
+                <a id="menuItem" class="active" href="#" onclick="showHide(0)">RAM</a>
+                <a id="menuItem" href="#" onclick="showHide(1)">CPU</a>
+                <a id="menuItem" href="#" onclick="showHide(2)">Hard Drive</a>
+                <a id="menuItem" href="#" onclick="showHide(3)">Network</a>
+                <a id="menuItem" href="#" onclick="showHide(4)">Machine Info</a>
+            </div>
+        </div>
+        <div class="content">
+            <div id="ram" class="contents">
+                <div id="chart_div" style="width: 100%; height: 79vh;"></div>
+            </div>
+            <div id="cpu" class="contents" hidden>
+                <div id="cpu_chart" style="width: 100%; height: 79vh;"></div>
+            </div>
+            <div id="hd" class="contents" hidden>
+                <div class="titleOne"> Hard Disks: </div>
+                <br>
+                <div id="fsTable"></div>
+            </div>
+            <div id="net" class="contents" hidden>
+                <div class="titleOne"> Network Info: </div>
+                <br>
+                <div id="netTable"></div>
+            </div>
+            <div id="machine" class="contents" hidden>
+                <div class="titleOne"> Machine Info: </div>
+                <br>
+                <div id="infoTable"></div>
+            </div>
+        </div>
+    </body>  
+</html>  
