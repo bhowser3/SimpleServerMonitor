@@ -1,0 +1,90 @@
+body {
+    /* margin: 0;
+    padding: 0; */
+    background-color: darkslategray;
+ }
+
+svg{
+    z-index: 10;
+}
+
+.updateButton {
+    background-color: #555555; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+  .updateButton:hover {
+    background-color: white;
+    color: #555555;
+  }
+
+
+.graph{
+    width: 90vw;
+    height: 90vh;
+    background-color: #9c9c9c;
+}
+
+.horizontalBox{
+    z-index: 1;
+    position: absolute;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.verticalBox{
+    z-index: 2;
+    position: absolute;
+    width: 90vw;
+    height: 90vh;
+    --parentHeight: 90vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.vertical_Line{
+    background-color: #b3b3b3;
+    height: 100%;
+    width: 1px;
+}
+
+.horizontal_Line{
+    background-color: #b3b3b3;
+    height: 1px;
+    width: 100%;
+}
+
+.pointBox{
+    z-index: 3;
+    position: absolute;
+    width: 90vw;
+    height: 90vh;
+}
+
+.lineBox{
+    z-index: 4;
+    /* position: absolute;
+    width: 90vw;
+    height: 90vh; */
+}
+
+.circle {
+    margin-left: -2.5px;
+    width: 5px;
+    height: 5px;
+    background: rgb(8, 144, 223);
+    /* visibility: hidden; */
+    border-radius: 50%
+  }
